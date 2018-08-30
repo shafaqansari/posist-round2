@@ -4,7 +4,7 @@ struct node{
     int val;
     node*left;
     node*right;
-};
+}*start1;
 
 string encrypt(string str)
 {
@@ -42,6 +42,7 @@ node* creation(int rval)
     node* start=new node;
     start->val=rval;
     node*ptr=start;
+    start1=start;
     char ch='y';
     char choice;
     validation: while(ch!='n')
@@ -127,8 +128,47 @@ if(root==NULL)
    }
     
 }
-
-
+int LongestChain(node* root)
+{
+    if(root==NULL)
+       return 0;
+    else
+    return 1+ max(LongestChain(root->left),LongestChain(root->right));
+}
+node * find(node* start1,int nval)
+{
+    if(start1->val==nval)
+       return start1;
+       
+    find(start1->left,nval);
+    find(start1->right,nval);
+}
+int Height(node* np)
+{
+    if(np==NULL)
+    return 0;
+    
+    return 1+max(Height(np->left),Height(np->right));
+}
+void merge(int val1,int val2)
+{
+    node* np1=find(start1,val1);
+    node* np2=find(start1,val2);
+    if(Height(np1)> Height(np2))
+       {
+           np1->val+=np2->val;
+           np2->val=0; //consider for deletion
+       }
+    else 
+    {
+        np2->val+=np1->val;
+        np1->val=0 ;   //consider for deletion
+    }
+}
+void transferOwn(int old,int nw)
+{
+    //validate old user Password and assign new password for new user for same id(here)
+}
 
 int main()
 {
@@ -190,6 +230,9 @@ int main()
                       cout<<"press 1 for Editing subtree of node\n ";
                       cout<<"press 2 for Trickling down the subtree value \n "; 
                       cout<<"press 3 for Editing Leaf Node\n";
+                      cout<<"press 4 for Longest Chain\n";
+                      cout<<"press 5 for merge\n";
+                      cout<<"press 6 for transfering ownership\n";
                       cout<<"press 0 for Exit\n";
                       cin>>ch;
                        int nodeval;
@@ -207,6 +250,19 @@ int main()
                                 cin>>nodeval;
                                 editleaf(it->second.second,nodeval);
                                 break;
+                        case 4: 
+                                cout<<LongestChain(it->second.second);
+                                break;
+                        case 5: cout<<"enter nodes value to be merged\n";
+                                 int v1,v2;
+                                 cin>>v1>>v2;
+                                 merge(v1,v2);
+                                 break;
+                        case 6: cout<<"enter new and old id of owners\n";
+                                 int old,nw;
+                                 cin>>old>>nw;
+                                 transferOwn(old,nw);
+                                 break;
                       }
                   }
                   while(ch!=0);
